@@ -8,6 +8,6 @@
 
 typedef struct thread *thread_t;
 
-void threads_init(void);
+void thread_init(void);
 thread_t thread_create(void (*start)(void));
 void thread_switch(void);
