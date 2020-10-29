@@ -19,7 +19,7 @@ struct avr_state {
 	uint8_t sph;
 };
 
-extern void thread_get_sreg(void);
+extern uint8_t thread_get_sreg(void);
 extern void thread_swap(struct avr_state *old, const struct avr_state *new);
 
 struct thread {
@@ -40,7 +40,7 @@ thread_t thread_create(void (*start)(void)) {
 	const thread_t thread = &threads[nthread++];
 	thread->saved_state.pcl = (uint16_t)start & 0xff;
 	thread->saved_state.pch = (uint16_t)start >> 8;
-	thread->saved_state.sreg = get_sreg();
+	thread->saved_state.sreg = thread_get_sreg();
 	
 	uint16_t sp = RAMEND / 2; // TODO: advance for each thread
 	thread->saved_state.spl = sp & 0xff;

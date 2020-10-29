@@ -15,7 +15,7 @@ AR="${SDKROOT}/sdk/bin/avr-ar"
 
 rm -f "${PRODUCT_NAME}"
 
-for f in threads.c threads.s; do
+for f in threads.c threads_asm.s; do
 	"${CC}" -c -mmcu="${MCU}" ${CFLAGS} ${HEADER_SEARCH_PATHS} "${f}"
 done
 
