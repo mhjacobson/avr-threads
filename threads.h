@@ -1,6 +1,6 @@
 /*
  * threads.h
- * UART library for ATmega644p
+ * threading library for ATmega644p
  * author: Matt Jacobson
  */
 

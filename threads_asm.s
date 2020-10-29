@@ -1,8 +1,8 @@
 /*
-* threads_asm.s
-* threading library for ATmega644p
-* author: Matt Jacobson
-*/
+ * threads_asm.s
+ * threading library for ATmega644p
+ * author: Matt Jacobson
+ */
 
 ; extern uint8_t get_sreg(void);
 .globl thread_get_sreg
