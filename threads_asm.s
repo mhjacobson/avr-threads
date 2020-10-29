@@ -5,12 +5,14 @@
 */
 
 ; extern uint8_t get_sreg(void);
+.globl thread_get_sreg
 thread_get_sreg:
  	; sreg == 0x3f
 	in r24, 0x3f
 	ret
 
 ; extern void thread_swap(struct avr_state *old, const struct avr_state *new);
+.globl thread_swap
 thread_swap:
 	; old <- r25:r24
 	; new <- r23:r22
