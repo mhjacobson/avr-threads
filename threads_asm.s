@@ -11,6 +11,18 @@ thread_get_sreg:
 	in r24, 0x3f
 	ret
 
+.globl thread_get_pc
+thread_get_pc:
+	; pop the RA off the stack.  note that the high byte is popped first
+	pop r25 ; pch
+	pop r24 ; pcl
+	
+	; push it back
+	push r24
+	push r25
+	
+	ret
+
 ; extern void thread_swap(struct avr_state *old, const struct avr_state *new);
 .globl thread_swap
 thread_swap:
@@ -47,13 +59,13 @@ thread_swap:
 	in r24, 0x3f
 	st X+, r24
 	
-	; pop the RA off the stack
-	pop r24 ; pcl
-	pop r25 ; pch
-
+	; pop the RA off the stack.  note that the high byte is popped first.
+	pop r24 ; pch
+	pop r25 ; pcl
+	
 	; save the RA
-	st X+, r24 ; pcl
-	st X+, r25 ; pch
+	st X+, r25 ; pcl
+	st X+, r24 ; pch
 	
 	; save the (post-pop) stack pointer
 	; spl == 0x3d
