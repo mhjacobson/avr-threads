@@ -7,6 +7,7 @@
 #include "threads.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include <avr/interrupt.h>
 #include <avr/io.h>
 
 struct avr_state {
@@ -42,7 +43,7 @@ thread_t thread_create(void (*start)(void)) {
 	thread_t thread = NULL;
 	
 	const bool interrupts_enabled = (SREG & (1 << SREG_I));
-	__builtin_avr_cli();
+	cli();
 	
 	if (next_thread_index < MAX_THREADS) {
 		const uint8_t thread_index = next_thread_index++;
@@ -60,7 +61,7 @@ thread_t thread_create(void (*start)(void)) {
 	}
 	
 	if (interrupts_enabled) {
-		__builtin_avr_sei();
+		sei();
 	}
 	
 	return thread;
@@ -71,7 +72,7 @@ void thread_switch(void) {
 	//   1. we're accessing global state (threads and next_thread_index)
 	//   2. changing current_thread and swapping must happen atomically
 	const bool interrupts_enabled = (SREG & (1 << SREG_I));
-	__builtin_avr_cli();
+	cli();
 	
 	const uint8_t current_index = current_thread - &threads[0];
 	const uint8_t next_index = (current_index == next_thread_index - 1) ? 0 : current_index + 1;
@@ -83,6 +84,6 @@ void thread_switch(void) {
 	thread_swap(&old_thread->saved_state, &new_thread->saved_state);
 	
 	if (interrupts_enabled) {
-		__builtin_avr_sei();
+		sei();
 	}
 }
